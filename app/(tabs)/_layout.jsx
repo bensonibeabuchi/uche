@@ -6,14 +6,11 @@ export default function TabLayout() {
   return (
     <Tabs
     screenOptions={{
-      tabBarActiveTintColor: '#ffd33d',
-      headerStyle: {
-        backgroundColor: '#25292e',
-      },
+      tabBarActiveTintColor: '#fff',
+      tabBarInactiveTintColor: "#F7B386",
       headerShadowVisible: false,
-      headerTintColor: '#fff',
       tabBarStyle: {
-      backgroundColor: '#25292e',
+      backgroundColor: '#EF680E',
       },
     }}
     >
@@ -21,17 +18,42 @@ export default function TabLayout() {
       name='index'
       options={{
         title: 'Home',
+        headerShown: false,
         tabBarIcon: ({color, focused}) => (
           <Icon name={focused ? 'ri-home-fill' : 'ri-home-line'} size={24} color={color} />
         )
       }}
       />
-      <Tabs.Screen
-      name='about'
+
+    <Tabs.Screen
+      name='favourite'
       options={{
-        title: 'About',
+        title: 'Favourite',
+        headerShown: false,
         tabBarIcon: ({color, focused}) => (
-          <Icon name={focused ? 'ri-information-fill' : 'ri-information-line'} size={24} color={color} />
+          <Icon name={focused ? 'ri-heart-3-fill' : 'ri-heart-3-line'} size={24} color={color} />
+        )
+      }}
+      />
+
+    <Tabs.Screen
+      name='calendar'
+      options={{
+        title: 'Calendar',
+        headerShown: false,
+        tabBarIcon: ({color, focused}) => (
+          <Icon name={focused ? 'ri-calendar-2-fill' : 'ri-calendar-2-line'} size={24} color={color} />
+        )
+      }}
+      />
+
+      <Tabs.Screen
+      name='profile'
+      options={{
+        title: 'Profile',
+        headerShown: false,
+        tabBarIcon: ({color, focused}) => (
+          <Icon name={focused ? 'ri-user-fill' : 'ri-user-line'} size={24} color={color} />
         )
       }}
       />
