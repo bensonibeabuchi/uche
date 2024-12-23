@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, Image, ScrollView, SafeAreaView } from "react-native";
+import { View, Text, TouchableOpacity, Image, ScrollView, SafeAreaView, FlatList } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import logo from '../../assets/images/meditation-logo.png'
 import MeditationCard from "../components/MeditationCard";
 import meditate from '../../assets/images/meditate.jpg'
-import meditate2 from '../../assets/images/images.jpeg'
 import DailyMeditation from "../components/DailyMeditation";
+import meditationData from "../constants/meditationData.json"
+import bestMeditation from "../constants/bestMeditation.json"
+
+
 
 export default function Home() {
     const [userName, setUserName] = useState("");
     const router = useRouter();
-
+   
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -36,119 +39,115 @@ export default function Home() {
     };
 
     return (
-      <SafeAreaView className="bg-[#F5F5F5]">
-        <ScrollView className="p-4">
-          <View className="bg-[#F5F5F5]">
-            <View className="w-16 h-16 mb-6 bg-[#312651] p-3 rounded-full">
-                <Image 
-                source={logo}
-                style={{width: '100%', height: '100%'}}
-                resizeMode="cover"
-                />
-            </View>
+      <SafeAreaView className="bg-[#F5F5F5] flex-1 p-4">
+        <FlatList
+          data={['']} // A placeholder for the outer list's data
+          className="p-4"
+          renderItem={() => (
             <View>
+              {/* Header Section */}
+              <View className="w-16 h-16 mb-6 bg-[#312651] p-3 rounded-full">
+                <Image
+                  source={logo}
+                  style={{ width: '100%', height: '100%' }}
+                  resizeMode="cover"
+                />
+              </View>
               <Text className="text-black">Hello {userName}!</Text>
-              <Text className="font-semibold text-xl">Find your perfect meditation</Text>              
-            </View>
-
-            <View className="border-[0.2px] rounded-md p-4 my-4">
-              <Text>
-              “Laziness May Appear Attractive, But Work Gives Satisfaction”
+              <Text className="font-semibold text-xl">
+                Find your perfect meditation
               </Text>
-            </View>
+              <View className="border-[0.2px] rounded-md p-4 my-4">
+                <Text>
+                  “Laziness May Appear Attractive, But Work Gives Satisfaction”
+                </Text>
+              </View>
 
-            <View className="my-4">
-              <Text className="font-semibold text-lg pb-4">Popular Meditations</Text>
-              <ScrollView
-              horizontal
+              {/* Popular Meditations Section */}
+              <View className="my-4">
+                <Text className="font-semibold text-lg pb-4">
+                  Popular Meditations
+                </Text>
+                <FlatList
+                  horizontal
+                  data={meditationData}
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={({ item, index }) => (
+                    <TouchableOpacity
+                          onPress={() =>
+                            router.push({
+                              pathname: 'pages/DetailsPage',
+                              params: {
+                                title: item?.title,
+                                description: item?.description,
+                                duration: item?.duration,
+                                target: item?.target,
+                                image: item?.image,
+                                instructions: JSON.stringify(item?.instructions),
+                              },
+                            })
+                          }
+                        >
+                      <MeditationCard
+                        title={item?.title}
+                        description={item?.shortDescription}
+                        duration={item?.duration}
+                        tag1={item?.target}
+                        source={item.image ? { uri: item.image } : meditate}
+                      />
+                    </TouchableOpacity>
+                  )}
+                />
+              </View>
+
+              {/* Daily Meditation Section */}
+              <View className="my-4">
+                <Text className="font-semibold text-lg pb-4">
+                  Daily Meditation
+                </Text>
+                <FlatList
+                  data={bestMeditation}
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={({ item, index }) => (
+                    <TouchableOpacity
+                    onPress={() =>
+                      router.push({
+                        pathname: 'pages/DetailsPage',
+                        params: {
+                          title: item?.title,
+                          description: item?.description,
+                          duration: item?.duration,
+                          target: item?.target,
+                          image: item?.image,
+                          instructions: JSON.stringify(item?.instructions),
+                        },
+                      })
+                    }
+                    >
+                      <DailyMeditation
+                        title={item?.title}
+                        description={item?.shortDescription}
+                        duration={item?.duration}
+                        tag1={item?.target}
+                        source={item.image ? { uri: item.image } : meditate}
+                      />
+
+                    </TouchableOpacity>
+                  )}
+                />
+              </View>
+
+              {/* Logout Button */}
+              <TouchableOpacity
+                onPress={handleLogout}
+                className="bg-[#312651] p-4 mt-6 rounded-lg"
               >
-                <MeditationCard
-                title="Mindful"
-                description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam aut ipsum omnis, quia laboriosam magni maiores voluptatibus fugiat iure inventore laudantium sint sapiente unde distinctio, tenetur dolorem possimus, molestiae molestias?"
-                duration="10 minutes"
-                tag1="calmness"
-                tag2="Breathing"
-                tag3="Mindful"
-                source={meditate}
-                />
-
-                <MeditationCard
-                title="Calmnes"
-                description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam aut ipsum omnis, quia laboriosam magni maiores voluptatibus fugiat iure inventore laudantium sint sapiente unde distinctio, tenetur dolorem possimus, molestiae molestias?"
-                duration="10 minutes"
-                tag1="calmness"
-                tag2="Breathing"
-                tag3="Mindful"
-                source={meditate2}
-                />
-
-                <MeditationCard
-                title="Breathing"
-                description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam aut ipsum omnis, quia laboriosam magni maiores voluptatibus fugiat iure inventore laudantium sint sapiente unde distinctio, tenetur dolorem possimus, molestiae molestias?"
-                duration="10 minutes"
-                tag1="calmness"
-                tag2="Breathing"
-                tag3="Mindful"
-                source={meditate}
-                />
-
-                <MeditationCard
-                title="Yoga"
-                description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam aut ipsum omnis, quia laboriosam magni maiores voluptatibus fugiat iure inventore laudantium sint sapiente unde distinctio, tenetur dolorem possimus, molestiae molestias?"
-                duration="10 minutes"
-                tag1="calmness"
-                tag2="Breathing"
-                tag3="Mindful"
-                source={meditate2}
-                />
-
-              </ScrollView>
+                <Text className="text-white text-center">Logout</Text>
+              </TouchableOpacity>
             </View>
-
-            <View className="my-4">
-              <Text className="font-semibold text-lg pb-4">Daily Meditation</Text>
-              <DailyMeditation 
-              title="Yoga"
-              description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam aut ipsum omnis, quia laboriosam magni maiores voluptatibus fugiat iure inventore laudantium sint sapiente unde distinctio, tenetur dolorem possimus, molestiae molestias?"
-              duration="10 minutes"
-              tag1="calmness"
-              tag2="Breathing"
-              tag3="Mindful"
-              source={meditate2}
-              />
-
-              <DailyMeditation 
-              title="Yoga"
-              description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam aut ipsum omnis, quia laboriosam magni maiores voluptatibus fugiat iure inventore laudantium sint sapiente unde distinctio, tenetur dolorem possimus, molestiae molestias?"
-              duration="10 minutes"
-              tag1="calmness"
-              tag2="Breathing"
-              tag3="Mindful"
-              source={meditate2}
-              />
-
-              <DailyMeditation 
-              title="Yoga"
-              description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam aut ipsum omnis, quia laboriosam magni maiores voluptatibus fugiat iure inventore laudantium sint sapiente unde distinctio, tenetur dolorem possimus, molestiae molestias?"
-              duration="10 minutes"
-              tag1="calmness"
-              tag2="Breathing"
-              tag3="Mindful"
-              source={meditate2}
-              />
-
-            </View>
-
-
-
-
-
-              {/* <TouchableOpacity onPress={handleLogout} className="bg-[#312651] p-4 mt-6 rounded-lg">
-                  <Text className="text-white text-center">Logout</Text>
-              </TouchableOpacity> */}
-          </View>
-
-        </ScrollView>
-        </SafeAreaView>
+          )}
+          ListFooterComponent={<View style={{ height: 32 }} />} // Prevent cutoff
+        />
+      </SafeAreaView>
     );
 }

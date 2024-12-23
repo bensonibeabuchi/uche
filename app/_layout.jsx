@@ -10,6 +10,10 @@ export default function RootLayout() {
       <Stack.Screen name="+not-found" options={{ headerShown: false }}/>
       <Stack.Screen name="pages/Signup" options={{headerShown: false}}/>
       <Stack.Screen name="pages/Login" options={{headerShown: false,}}/>
+      <Stack.Screen name="pages/DetailsPage" options={{
+        headerShown: false,
+        presentation: 'modal'
+        }}/>
     </Stack>
     <StatusBar style="dark"/>
     </>

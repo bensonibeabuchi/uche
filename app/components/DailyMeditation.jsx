@@ -8,8 +8,8 @@ export default function DailyMeditation(props) {
         <Image source={props.source} resizeMode='cover' style={{width: '100%', height: '142'}} className="rounded-lg" />
         <View className="flex-row p-1 mt-1">
             <Text className="text-[6px] mr-2 bg-[#3E57FF] items-center text-center justify-center p-2 rounded-md text-white">{props.tag1}</Text>
-            <Text className="text-[6px] mr-2 bg-[#3E57FF] items-center text-center justify-center p-2 rounded-md text-white">{props.tag2}</Text>
-            <Text className="text-[6px] mr-2 bg-[#3E57FF] items-center text-center justify-center p-2 rounded-md text-white">{props.tag3}</Text>
+            {/* <Text className="text-[6px] mr-2 bg-[#3E57FF] items-center text-center justify-center p-2 rounded-md text-white">{props.tag2}</Text>
+            <Text className="text-[6px] mr-2 bg-[#3E57FF] items-center text-center justify-center p-2 rounded-md text-white">{props.tag3}</Text> */}
         </View>
       <Text className="font-semibold text-lg">{props.title}</Text>
       {/* <View className="h-[60]">
